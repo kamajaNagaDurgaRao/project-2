@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temple Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      color: #333;
+    }
+    header {
+      background: #673ab7;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background: #4527a0;
+      display: flex;
+      justify-content: center;
+      padding: 0.5rem;
+    }
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      display: none;
+      padding: 2rem;
+      min-height: 70vh;
+    }
+    section.active {
+      display: block;
+    }
+
+    /* Dashboard */
+    .search-bar {
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+    .search-bar input {
+      padding: 0.5rem;
+      width: 60%;
+      max-width: 400px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .card-content {
+      padding: 1rem;
+    }
+    .card-content h3 {
+      margin: 0 0 0.5rem;
+      color: #673ab7;
+    }
+    .card-content p {
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      background: #673ab7;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    .btn:hover {
+      background: #512da8;
+    }
+
+    /* Details Page */
+    .details img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    .details h2 {
+      margin-top: 1rem;
+      color: #673ab7;
+    }
+    .details p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    /* Contact */
+    .contact-form {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .contact-form button {
+      padding: 0.6rem 1rem;
+      background: #673ab7;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .contact-form button:hover {
+      background: #512da8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #eee;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>Temple Information Dashboard</h1>
+    <p>Explore famous temples with history, culture & details</p>
+  </header>
+
+  <!-- Navigation -->
+  <nav>
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('temples')">Temples</a>
+    <a onclick="showPage('contact')">Contact</a>
+  </nav>
+
+  <!-- Home Page -->
+  <section id="home" class="active">
+    <h2>Welcome to the Temple Dashboard</h2>
+    <p>Discover India’s most sacred temples, their cultural significance, and history. Use the navigation to explore temple details or reach out through the contact page.</p>
+  </section>
+
+  <!-- Temples Dashboard -->
+  <section id="temples">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search temples...">
+    </div>
+    <div class="dashboard" id="templeList"></div>
+  </section>
+
+  <!-- Temple Details -->
+  <section id="details" class="details"></section>
+
+  <!-- Contact Page -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <div class="contact-form">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea rows="4" placeholder="Your Message"></textarea>
+      <button>Send Message</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 Temple Dashboard | Built with HTML, CSS, JS
+  </footer>
+
+  <script>
+    // Temple Data
+    const temples = [
+      {
+        name: "Tirupati Balaji Temple",
+        location: "Andhra Pradesh, India",
+        description: "One of the most visited temples in the world, dedicated to Lord Venkateswara.",
+        details: "Tirupati Balaji Temple is located in Tirumala and is considered one of the richest and most visited temples. Pilgrims often donate large amounts of gold and money here. The temple follows ancient rituals and attracts millions annually.",
+        image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Tirumala_090615.jpg"
+      },
+      {
+        name: "Meenakshi Amman Temple",
+        location: "Madurai, Tamil Nadu, India",
+        description: "A historic temple dedicated to Goddess Meenakshi and Lord Sundareswarar.",
+        details: "Meenakshi Amman Temple is renowned for its stunning architecture, with thousands of colorful sculptures. It is a major pilgrimage site in Tamil Nadu and an important cultural landmark.",
+        image: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Meenakshi_Amman_temple_tower.jpg"
+      },
+      {
+        name: "Jagannath Temple",
+        location: "Puri, Odisha, India",
+        description: "Famous for the annual Rath Yatra, dedicated to Lord Jagannath.",
+        details: "Jagannath Temple is one of the Char Dham pilgrimage sites. Its annual Rath Yatra (chariot festival) attracts millions. Non-Hindus are not allowed inside, but the festival is open to all.",
+        image: "https://upload.wikimedia.org/wikipedia/commons/4/4a/Jagannath_Temple_1.jpg"
+      },
+      {
+        name: "Kashi Vishwanath Temple",
+        location: "Varanasi, Uttar Pradesh, India",
+        description: "One of the holiest temples dedicated to Lord Shiva.",
+        details: "Kashi Vishwanath Temple is situated on the banks of the River Ganges and is one of the twelve Jyotirlingas. Devotees believe that visiting the temple and taking a dip in the Ganges washes away sins.",
+        image: "https://upload.wikimedia.org/wikipedia/commons/0/0d/Kashi_Vishwanath_Temple.jpg"
+      }
+    ];
+
+    const templeList = document.getElementById("templeList");
+    const detailsPage = document.getElementById("details");
+
+    // Render temple cards
+    function renderTemples(data) {
+      templeList.innerHTML = "";
+      data.forEach((t, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${t.image}" alt="${t.name}">
+          <div class="card-content">
+            <h3>${t.name}</h3>
+            <p><strong>Location:</strong> ${t.location}</p>
+            <p>${t.description}</p>
+            <button class="btn" onclick="showDetails(${index})">More Info</button>
+          </div>
+        `;
+        templeList.appendChild(card);
+      });
+    }
+    renderTemples(temples);
+
+    // Search filter
+    document.getElementById("searchInput").addEventListener("keyup", function() {
+      const query = this.value.toLowerCase();
+      const filtered = temples.filter(t => 
+        t.name.toLowerCase().includes(query) || 
+        t.location.toLowerCase().includes(query) ||
+        t.description.toLowerCase().includes(query)
+      );
+      renderTemples(filtered);
+    });
+
+    // Show details
+    function showDetails(index) {
+      const t = temples[index];
+      detailsPage.innerHTML = `
+        <img src="${t.image}" alt="${t.name}">
+        <h2>${t.name}</h2>
+        <p><strong>Location:</strong> ${t.location}</p>
+        <p>${t.details}</p>
+        <button class="btn" onclick="showPage('temples')">⬅ Back to Temples</button>
+      `;
+      showPage("details");
+    }
+
+    // Navigation
+    function showPage(id) {
+      document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      window.scrollTo(0, 0);
+    }
+  </script>
+</body>
+</html>
